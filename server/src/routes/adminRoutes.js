@@ -7,6 +7,7 @@ router.use(auth);
 
 // About (singleton)
 router.get('/about', c.getAbout);
+
 router.put('/about', c.upsertAbout);
 
 // Skills
