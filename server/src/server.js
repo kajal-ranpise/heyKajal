@@ -27,6 +27,12 @@ app.use('/api/admin', adminRoutes);
 app.use('/api', publicRoutes);
 app.use('/api/profiles', profileRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// In serverless (Vercel), the module is imported — don't call listen.
+// Locally (node src/server.js), require.main === module is true — start the server.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
