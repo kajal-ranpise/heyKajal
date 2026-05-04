@@ -65,9 +65,7 @@ function Contact() {
                   method="POST"
                   data-aos="fade-up"
                   data-aos-delay="200"
-                  className="php-email-form" 
-                  data-aos="fade-up" 
-                  data-aos-delay="200">
+                  className="php-email-form">
                 <div className="row gy-4">
                   <div className="col-md-6">
                     <label htmlFor="name-field" className="pb-2">

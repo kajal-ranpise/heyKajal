@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { projectThunks } from '../../features/adminDataSlice';
 
 const CATEGORIES = ['filter-react', 'filter-node', 'filter-php', 'filter-mysql', 'filter-mongodb'];
-const COLOR_CLASSES = ['item-cyan', 'item-orange', 'item-teal', 'item-red', 'item-indigo', 'item-pink'];
 
 const empty = {
   slug: '', title: '', desc: '', industry: '', tech: '', category: [],

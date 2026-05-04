@@ -16,9 +16,9 @@ function Footer() {
           {/* <a href="#"><i className="bi bi-twitter-x"></i></a> */}
      {/*      <a href="#"><i className="bi bi-facebook"></i></a>
           <a href="#"><i className="bi bi-instagram"></i></a> */}
-          <a href="https://github.com/kajal-ranpise"  target="_blank"><i className="bi bi-github"></i></a>
-          <a href="https://www.linkedin.com/in/kajal-ranpise"  target="_blank"><i className="bi bi-linkedin"></i></a>
-          <a href="mailto:kajaldranpise@gmail.com" target="_blank"><i class="bi bi-envelope"></i></a>
+          <a href="https://github.com/kajal-ranpise" target="_blank" rel="noreferrer"><i className="bi bi-github"></i></a>
+          <a href="https://www.linkedin.com/in/kajal-ranpise" target="_blank" rel="noreferrer"><i className="bi bi-linkedin"></i></a>
+          <a href="mailto:kajaldranpise@gmail.com" target="_blank" rel="noreferrer"><i className="bi bi-envelope"></i></a>
         </div>
 
       {/*   <div className="credits">
