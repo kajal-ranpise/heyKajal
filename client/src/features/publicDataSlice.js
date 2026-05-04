@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const BASE = process.env.REACT_APP_API_URL;
 
 export const fetchAbout = createAsyncThunk('publicData/fetchAbout', async () => {
   const { data } = await axios.get(`${BASE}/about`);
