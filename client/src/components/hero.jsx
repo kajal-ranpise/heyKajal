@@ -17,7 +17,7 @@ function Hero() {
       >
         <div className="row">
           <div className="col-lg-8">
-            <h2>{about.name || "Kajal Ranpise"}</h2>
+            <h2>{about.name || "Kajal Ranpise Test"}</h2>
             <p>
               {about.heroSubtitle ||
                 "Full Stack Developer | MERN Stack | AI Enthusiast | Building Scalable Web & AI Solutions"}
