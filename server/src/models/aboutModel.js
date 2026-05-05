@@ -14,6 +14,7 @@ const aboutSchema = new mongoose.Schema({
   dob: { type: String, default: '' },
   heroTitle: { type: String, default: '' },
   heroSubtitle: { type: String, default: '' },
+  profileImg: { type: String, default: '' },
 });
 
 module.exports = mongoose.model('About', aboutSchema);

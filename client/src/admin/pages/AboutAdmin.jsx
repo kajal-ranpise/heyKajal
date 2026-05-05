@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAdminAbout, saveAdminAbout, clearSuccessMsg } from '../../features/adminDataSlice';
+import S3ImageUpload from '../components/S3ImageUpload';
 
 const fields = [
   { key: 'name', label: 'Full Name' },
@@ -57,6 +58,15 @@ function AboutAdmin() {
         <h2>Edit About Details</h2>
         <form onSubmit={handleSubmit}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
+            <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+              <label>Profile Image</label>
+              <S3ImageUpload
+                value={form.profileImg}
+                onChange={(url) => handleChange('profileImg', url)}
+                folder="profile"
+                label="Profile Image"
+              />
+            </div>
             {fields.map(({ key, label, textarea }) => (
               <div
                 className="admin-form-group"

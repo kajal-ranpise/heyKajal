@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectThunks } from '../../features/adminDataSlice';
+import S3ImageUpload from '../components/S3ImageUpload';
 
 const CATEGORIES = ['filter-react', 'filter-node', 'filter-php', 'filter-mysql', 'filter-mongodb'];
 
@@ -86,8 +87,13 @@ function ProjectsAdmin() {
           <input type="number" value={data.year} onChange={(e) => setData({ ...data, year: e.target.value })} />
         </div>
         <div className="admin-form-group">
-          <label>Image URL / path</label>
-          <input type="text" value={data.imgUrl} onChange={(e) => setData({ ...data, imgUrl: e.target.value })} />
+          <label>Image</label>
+          <S3ImageUpload
+            value={data.imgUrl}
+            onChange={(url) => setData({ ...data, imgUrl: url })}
+            folder="projects"
+            label="Project Image"
+          />
         </div>
         <div className="admin-form-group">
           <label>Order</label>

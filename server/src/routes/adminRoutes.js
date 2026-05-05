@@ -1,9 +1,13 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const c = require('../controllers/adminDataController');
+const { getUploadUrl } = require('../controllers/uploadController');
 
 const router = express.Router();
 router.use(auth);
+
+// Media upload — returns a presigned S3 PUT URL; client uploads directly
+router.get('/upload/presigned-url', getUploadUrl);
 
 // About (singleton)
 router.get('/about', c.getAbout);
