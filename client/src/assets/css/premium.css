@@ -419,6 +419,32 @@ a {
   margin: 16px 0 0 !important;
 }
 
+/* "Hi, I'm" — force white so gradient-text sibling doesn't bleed */
+.hero-hi {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Waving hand */
+.wave-hand {
+  display: inline-block;
+  font-size: 0.85em;
+  transform-origin: 70% 80%;
+  animation: waveHand 2.4s ease-in-out infinite;
+  animation-delay: 1s;
+  cursor: default;
+}
+
+@keyframes waveHand {
+  0%        { transform: rotate(0deg); }
+  10%       { transform: rotate(18deg); }
+  20%       { transform: rotate(-8deg); }
+  30%       { transform: rotate(18deg); }
+  40%       { transform: rotate(-4deg); }
+  50%       { transform: rotate(14deg); }
+  60%, 100% { transform: rotate(0deg); }
+}
+
 /* Typewriter role line */
 .hero-v2-typewriter {
   font-size: 20px;
@@ -758,6 +784,106 @@ a {
   background: linear-gradient(90deg, var(--accent-color), #667eea) !important;
   border-radius: 50px !important;
   transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* ============================================================
+   SKILLS — Bubble Layout
+   ============================================================ */
+
+.skill-bubbles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  padding: 12px 0 24px;
+}
+
+.skill-bubble {
+  width: 114px;
+  height: 114px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-color);
+  border: 2px solid color-mix(in srgb, var(--accent-color), transparent 52%);
+  box-shadow: 0 4px 22px rgba(52, 183, 167, 0.12), inset 0 1px 0 rgba(255,255,255,0.07);
+  overflow: hidden;
+  cursor: default;
+  animation: bubbleFloat 4s ease-in-out infinite;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.skill-bubble:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 10px 36px rgba(52, 183, 167, 0.38), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Liquid fill rises from the bottom */
+.skill-bubble-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(52, 183, 167, 0.26) 0%,
+    rgba(102, 126, 234, 0.22) 100%
+  );
+  border-radius: 0 0 50% 50%;
+  pointer-events: none;
+}
+
+.skill-bubble-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  text-align: center;
+}
+
+.skill-bubble-name {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--heading-color);
+  font-family: var(--heading-font);
+  line-height: 1.25;
+  letter-spacing: 0.2px;
+}
+
+.skill-bubble-val {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--accent-color);
+  font-family: var(--heading-font);
+  line-height: 1;
+}
+
+@keyframes bubbleFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-9px); }
+}
+
+[data-theme="dark"] .skill-bubble {
+  background: rgba(22, 27, 34, 0.92);
+  box-shadow: 0 4px 22px rgba(52, 183, 167, 0.16), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] .skill-bubble:hover {
+  box-shadow: 0 10px 36px rgba(52, 183, 167, 0.42), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+@media (max-width: 576px) {
+  .skill-bubble {
+    width: 94px;
+    height: 94px;
+  }
+  .skill-bubble-val { font-size: 15px; }
+  .skill-bubble-name { font-size: 9.5px; }
 }
 
 /* ============================================================

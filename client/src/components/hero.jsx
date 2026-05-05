@@ -82,7 +82,7 @@ function Hero() {
           </motion.span>
 
           <motion.h1 className="hero-v3-name" {...fadeUp(0.22)}>
-            Hi, I'm<br />
+            <span className="wave-hand" aria-label="waving hand">👋🏻</span> &nbsp;<span className="hero-hi">Hi, I'm</span> <br />
             <span className="gradient-text">
               {about.name || "Kajal Ranpise"}
             </span>
