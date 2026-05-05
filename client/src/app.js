@@ -42,7 +42,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    AOS.init();
+    AOS.init({ duration: 800, once: true, offset: 60 });
     GLightbox();
     new Swiper(".swiper", { loop: true });
     dispatch(fetchAbout());

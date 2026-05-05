@@ -1,31 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
-import profileImg from "../assets/img/profile-img.jpg";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-
+import { motion } from "framer-motion";
+import profileImg from "../assets/img/profile-img.jpg";
 
 const StatCounter = ({ end, duration = 1500, startCounting }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!startCounting) return;
-
     let start = 0;
-    const intervalTime = 100;
-    const increment = end / (duration / intervalTime);
-
+    const step = end / (duration / 100);
     const timer = setInterval(() => {
-      start += increment;
+      start += step;
       if (start >= end) {
         start = end;
         clearInterval(timer);
       }
       setCount(Math.floor(start));
-    }, intervalTime);
-
+    }, 100);
     return () => clearInterval(timer);
   }, [end, duration, startCounting]);
 
   return <span>{count}</span>;
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
 
 function About() {
@@ -64,68 +65,69 @@ function About() {
         </div>
 
         <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="row gy-4 justify-content-center">
-            <div className="col-lg-4">
-              <img src={profileImg} className="img-fluid" alt="Profile" />
+          <div className="row gy-4 justify-content-center align-items-center">
+            {/* Profile image */}
+            <div className="col-lg-4 text-center">
+              <motion.div
+                whileHover={{ scale: 1.02, rotate: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <img src={profileImg} className="img-fluid" alt="Kajal Ranpise" />
+              </motion.div>
             </div>
+
+            {/* Info */}
             <div className="col-lg-8 content">
               <h2>{about.role || "Full Stack & Web App Developer"}</h2>
-
               <div className="row">
                 <div className="col-lg-6">
                   <ul>
                     {about.phone && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
+                        <i className="bi bi-chevron-right"></i>
                         <strong>Phone:</strong> <span>{about.phone}</span>
                       </li>
                     )}
                     {about.location && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
+                        <i className="bi bi-chevron-right"></i>
                         <strong>Location:</strong> <span>{about.location}</span>
                       </li>
                     )}
                     {about.role && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
+                        <i className="bi bi-chevron-right"></i>
                         <strong>Role:</strong> <span>{about.role}</span>
                       </li>
                     )}
                   </ul>
                 </div>
-
                 <div className="col-lg-6">
                   <ul>
                     {about.degree && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
+                        <i className="bi bi-chevron-right"></i>
                         <strong>Degree:</strong> <span>{about.degree}</span>
                       </li>
                     )}
                     {about.email && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
+                        <i className="bi bi-chevron-right"></i>
                         <strong>Email:</strong> <span>{about.email}</span>
                       </li>
                     )}
                     {about.availability && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
-                        <strong>Availability:</strong>{" "}
-                        <span>{about.availability}</span>
+                        <i className="bi bi-chevron-right"></i>
+                        <strong>Availability:</strong> <span>{about.availability}</span>
                       </li>
                     )}
                     {about.github && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
+                        <i className="bi bi-chevron-right"></i>
                         <strong>GitHub:</strong>{" "}
                         <span>
-                          <a
-                            href={about.github}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
+                          <a href={about.github} target="_blank" rel="noreferrer">
                             {about.github.replace(/^https?:\/\//, "")}
                           </a>
                         </span>
@@ -133,15 +135,11 @@ function About() {
                     )}
                     {about.linkedin && (
                       <li>
-                        <i className="bi bi-chevron-right"></i>{" "}
+                        <i className="bi bi-chevron-right"></i>
                         <strong>LinkedIn:</strong>{" "}
                         <span>
-                          <a
-                            href={about.linkedin}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            View LinkedIn Profile
+                          <a href={about.linkedin} target="_blank" rel="noreferrer">
+                            View Profile
                           </a>
                         </span>
                       </li>
@@ -153,67 +151,67 @@ function About() {
           </div>
         </div>
       </section>
-      {/* /About Section */}
 
       {/* Skills Section */}
       {skills.length > 0 && (
         <section id="skills" className="skills section">
           <div className="container section-title" data-aos="fade-up">
             <h2>Skills &amp; Expertise</h2>
-            <p>
-              Technologies and tools I use to design, build, and optimize
-              applications.
-            </p>
+            <p>Technologies and tools I use to design, build, and optimize applications.</p>
           </div>
 
           <div className="container" data-aos="fade-up" data-aos-delay="100">
-            <div className="row skills-content skills-animation">
-              {[firstCol, secondCol].map((colSkills, colIndex) => (
-                <div className="col-lg-6" key={colIndex}>
-                  {colSkills.map((skill) => (
-                    <div
-                      className="progress"
+            <div className="row skills-content">
+              {[firstCol, secondCol].map((col, colIdx) => (
+                <div className="col-lg-6" key={colIdx}>
+                  {col.map((skill, skillIdx) => (
+                    <motion.div
                       key={skill._id}
-                      style={{ marginBottom: "15px", position: "relative" }}
+                      className="progress"
+                      variants={fadeUp}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      custom={skillIdx}
+                      style={{ marginBottom: "20px" }}
                     >
                       <span
                         className="skill"
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
-                          fontWeight: "500",
-                          marginBottom: "5px",
-                          position: "relative",
-                          zIndex: 2,
-                          color: "#000",
+                          fontWeight: "600",
+                          fontSize: "14px",
+                          marginBottom: "8px",
+                          color: "var(--heading-color)",
                         }}
                       >
                         <span>{skill.name}</span>
-                        <i className="val">{skill.val}%</i>
+                        <span style={{ color: "var(--accent-color)" }}>{skill.val}%</span>
                       </span>
                       <div
                         className="progress-bar-wrap"
                         style={{
-                          background: "#e0e0e0",
-                          height: "10px",
-                          borderRadius: "5px",
+                          background: "var(--border-color)",
+                          height: "8px",
+                          borderRadius: "50px",
+                          overflow: "hidden",
                         }}
                       >
-                        <div
+                        <motion.div
                           className="progress-bar"
                           role="progressbar"
                           aria-valuenow={skill.val}
                           aria-valuemin="0"
                           aria-valuemax="100"
-                          style={{
-                            width: `${skill.val}%`,
-                            height: "100%",
-                            borderRadius: "5px",
-                            background: `color-mix(in srgb, var(--accent-color) 90%, white 20%)`,
-                          }}
-                        ></div>
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.val}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: skillIdx * 0.05 }}
+                          style={{ height: "100%", borderRadius: "50px" }}
+                        />
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               ))}
@@ -221,46 +219,45 @@ function About() {
           </div>
         </section>
       )}
-      {/* /Skills Section */}
 
       {/* Stats Section */}
       {stats.length > 0 && (
         <section id="stats" className="stats section" ref={statsRef}>
-          <div
-            className="container section-title"
-            style={{ textAlign: "center" }}
-          >
+          <div className="container section-title" style={{ textAlign: "center" }}>
             <h2>Facts</h2>
             <p>People. Work. Growth. Always!</p>
           </div>
 
           <div className="container">
             <div className="row gy-4">
-              {stats.map((stat) => (
-                <div className="col-lg-3 col-md-6" key={stat._id}>
+              {stats.map((stat, idx) => (
+                <motion.div
+                  key={stat._id}
+                  className="col-lg-3 col-md-6"
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  custom={idx}
+                >
                   <div
                     className="stats-item text-center w-100 h-100"
-                    style={{
-                      padding: "30px",
-                      borderRadius: "10px",
-                      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                    }}
+                    style={{ padding: "32px 20px" }}
                   >
-                    <h3 style={{ fontSize: "2rem", color: "#007bff" }}>
-                      <StatCounter
-                        end={stat.end}
-                        startCounting={startStats}
-                      />
+                    <h3 style={{ fontSize: "2.5rem", fontWeight: "800", marginBottom: "8px" }}>
+                      <StatCounter end={stat.end} startCounting={startStats} />
+                      {stat.suffix || "+"}
                     </h3>
-                    <p style={{ margin: 0, fontWeight: "500" }}>{stat.label}</p>
+                    <p style={{ margin: 0, fontWeight: "500", fontSize: "14px" }}>
+                      {stat.label}
+                    </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
       )}
-      {/* /Stats Section */}
     </main>
   );
 }

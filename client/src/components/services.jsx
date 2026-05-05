@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import AOS from "aos";
 
 const BLOB_PATHS = [
@@ -12,12 +13,8 @@ const BLOB_PATHS = [
 ];
 
 const COLOR_CLASSES = [
-  "item-cyan",
-  "item-orange",
-  "item-teal",
-  "item-red",
-  "item-indigo",
-  "item-pink",
+  "item-cyan", "item-orange", "item-teal",
+  "item-red", "item-indigo", "item-pink",
 ];
 
 function Services() {
@@ -32,18 +29,15 @@ function Services() {
       <section id="services" className="services section">
         <div className="container section-title" data-aos="fade-up">
           <h2>Services</h2>
-          <p>
-            End-to-end web solutions that blend creativity, functionality, and
-            scalability
-          </p>
+          <p>End-to-end web solutions that blend creativity, functionality, and scalability.</p>
         </div>
 
         <div className="container">
           <div className="row gy-4">
             {services.map((service, idx) => {
-              const colorClass =
-                service.colorClass || COLOR_CLASSES[idx % COLOR_CLASSES.length];
+              const colorClass = service.colorClass || COLOR_CLASSES[idx % COLOR_CLASSES.length];
               const blobPath = BLOB_PATHS[idx % BLOB_PATHS.length];
+
               return (
                 <div
                   key={service._id}
@@ -51,8 +45,10 @@ function Services() {
                   data-aos="fade-up"
                   data-aos-delay={(idx + 1) * 100}
                 >
-                  <div
+                  <motion.div
                     className={`service-item ${colorClass} position-relative`}
+                    whileHover={{ y: -7 }}
+                    transition={{ duration: 0.25 }}
                   >
                     <div className="icon">
                       <svg width="100" height="100" viewBox="0 0 600 600">
@@ -62,7 +58,7 @@ function Services() {
                     </div>
                     <h3>{service.title}</h3>
                     <p>{service.description}</p>
-                  </div>
+                  </motion.div>
                 </div>
               );
             })}
