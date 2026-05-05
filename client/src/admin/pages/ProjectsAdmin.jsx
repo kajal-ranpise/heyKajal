@@ -10,6 +10,98 @@ const empty = {
   imgUrl: '', features: '', client: '', year: '', order: 0,
 };
 
+const toggleCategory = (data, setData, cat) => {
+  const cats = data.category.includes(cat)
+    ? data.category.filter((c) => c !== cat)
+    : [...data.category, cat];
+  setData({ ...data, category: cats });
+};
+
+const ProjectForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => (
+  <form onSubmit={onSubmit}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
+      <div className="admin-form-group">
+        <label>Slug (unique ID)</label>
+        <input type="text" value={data.slug} onChange={(e) => setData({ ...data, slug: e.target.value })} required />
+      </div>
+      <div className="admin-form-group">
+        <label>Title</label>
+        <input type="text" value={data.title} onChange={(e) => setData({ ...data, title: e.target.value })} required />
+      </div>
+      <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+        <label>Description</label>
+        <textarea value={data.desc} onChange={(e) => setData({ ...data, desc: e.target.value })} rows={2} />
+      </div>
+      <div className="admin-form-group">
+        <label>Industry</label>
+        <input type="text" value={data.industry} onChange={(e) => setData({ ...data, industry: e.target.value })} />
+      </div>
+      <div className="admin-form-group">
+        <label>Tech Stack (comma-separated)</label>
+        <input type="text" placeholder="React, Node.js, MySQL" value={data.tech} onChange={(e) => setData({ ...data, tech: e.target.value })} />
+      </div>
+      <div className="admin-form-group">
+        <label>Client</label>
+        <input type="text" value={data.client} onChange={(e) => setData({ ...data, client: e.target.value })} />
+      </div>
+      <div className="admin-form-group">
+        <label>Year</label>
+        <input type="number" value={data.year} onChange={(e) => setData({ ...data, year: e.target.value })} />
+      </div>
+      <div className="admin-form-group">
+        <label>Image</label>
+        <S3ImageUpload
+          value={data.imgUrl}
+          onChange={(url) => setData({ ...data, imgUrl: url })}
+          folder="projects"
+          label="Project Image"
+        />
+      </div>
+      <div className="admin-form-group">
+        <label>Order</label>
+        <input type="number" value={data.order} onChange={(e) => setData({ ...data, order: Number(e.target.value) })} />
+      </div>
+      <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+        <label>Features (comma-separated)</label>
+        <input type="text" value={data.features} onChange={(e) => setData({ ...data, features: e.target.value })} />
+      </div>
+      <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+        <label>Filter Categories</label>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
+          {CATEGORIES.map((cat) => (
+            <label key={cat} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', fontSize: '0.85rem' }}>
+              <input
+                type="checkbox"
+                checked={data.category.includes(cat)}
+                onChange={() => toggleCategory(data, setData, cat)}
+              />
+              {cat.replace('filter-', '')}
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+      <button type="submit" className="btn-admin-primary">{submitLabel}</button>
+      {onCancel && <button type="button" className="btn-admin-secondary" onClick={onCancel}>Cancel</button>}
+    </div>
+  </form>
+);
+
+const toPayload = (data) => ({
+  ...data,
+  tech: data.tech ? data.tech.split(',').map((s) => s.trim()).filter(Boolean) : [],
+  features: data.features ? data.features.split(',').map((s) => s.trim()).filter(Boolean) : [],
+  year: data.year ? Number(data.year) : undefined,
+});
+
+const fromRecord = (p) => ({
+  ...p,
+  tech: Array.isArray(p.tech) ? p.tech.join(', ') : p.tech || '',
+  features: Array.isArray(p.features) ? p.features.join(', ') : p.features || '',
+  year: p.year || '',
+});
+
 function ProjectsAdmin() {
   const dispatch = useDispatch();
   const projects = useSelector((s) => s.adminData.projects);
@@ -20,27 +112,6 @@ function ProjectsAdmin() {
   useEffect(() => {
     dispatch(projectThunks.fetch());
   }, [dispatch]);
-
-  const toggleCategory = (data, setData, cat) => {
-    const cats = data.category.includes(cat)
-      ? data.category.filter((c) => c !== cat)
-      : [...data.category, cat];
-    setData({ ...data, category: cats });
-  };
-
-  const toPayload = (data) => ({
-    ...data,
-    tech: data.tech ? data.tech.split(',').map((s) => s.trim()).filter(Boolean) : [],
-    features: data.features ? data.features.split(',').map((s) => s.trim()).filter(Boolean) : [],
-    year: data.year ? Number(data.year) : undefined,
-  });
-
-  const fromRecord = (p) => ({
-    ...p,
-    tech: Array.isArray(p.tech) ? p.tech.join(', ') : p.tech || '',
-    features: Array.isArray(p.features) ? p.features.join(', ') : p.features || '',
-    year: p.year || '',
-  });
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -54,77 +125,6 @@ function ProjectsAdmin() {
     dispatch(projectThunks.update({ id: editing._id, ...toPayload(editing) }));
     setEditing(null);
   };
-
-  const ProjectForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => (
-    <form onSubmit={onSubmit}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
-        <div className="admin-form-group">
-          <label>Slug (unique ID)</label>
-          <input type="text" value={data.slug} onChange={(e) => setData({ ...data, slug: e.target.value })} required />
-        </div>
-        <div className="admin-form-group">
-          <label>Title</label>
-          <input type="text" value={data.title} onChange={(e) => setData({ ...data, title: e.target.value })} required />
-        </div>
-        <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-          <label>Description</label>
-          <textarea value={data.desc} onChange={(e) => setData({ ...data, desc: e.target.value })} rows={2} />
-        </div>
-        <div className="admin-form-group">
-          <label>Industry</label>
-          <input type="text" value={data.industry} onChange={(e) => setData({ ...data, industry: e.target.value })} />
-        </div>
-        <div className="admin-form-group">
-          <label>Tech Stack (comma-separated)</label>
-          <input type="text" placeholder="React, Node.js, MySQL" value={data.tech} onChange={(e) => setData({ ...data, tech: e.target.value })} />
-        </div>
-        <div className="admin-form-group">
-          <label>Client</label>
-          <input type="text" value={data.client} onChange={(e) => setData({ ...data, client: e.target.value })} />
-        </div>
-        <div className="admin-form-group">
-          <label>Year</label>
-          <input type="number" value={data.year} onChange={(e) => setData({ ...data, year: e.target.value })} />
-        </div>
-        <div className="admin-form-group">
-          <label>Image</label>
-          <S3ImageUpload
-            value={data.imgUrl}
-            onChange={(url) => setData({ ...data, imgUrl: url })}
-            folder="projects"
-            label="Project Image"
-          />
-        </div>
-        <div className="admin-form-group">
-          <label>Order</label>
-          <input type="number" value={data.order} onChange={(e) => setData({ ...data, order: Number(e.target.value) })} />
-        </div>
-        <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-          <label>Features (comma-separated)</label>
-          <input type="text" value={data.features} onChange={(e) => setData({ ...data, features: e.target.value })} />
-        </div>
-        <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-          <label>Filter Categories</label>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
-            {CATEGORIES.map((cat) => (
-              <label key={cat} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', fontSize: '0.85rem' }}>
-                <input
-                  type="checkbox"
-                  checked={data.category.includes(cat)}
-                  onChange={() => toggleCategory(data, setData, cat)}
-                />
-                {cat.replace('filter-', '')}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-        <button type="submit" className="btn-admin-primary">{submitLabel}</button>
-        {onCancel && <button type="button" className="btn-admin-secondary" onClick={onCancel}>Cancel</button>}
-      </div>
-    </form>
-  );
 
   return (
     <div>

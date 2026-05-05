@@ -4,6 +4,37 @@ import { educationThunks } from '../../features/adminDataSlice';
 
 const empty = { degree: '', year: '', institute: '', description: '', order: 0 };
 
+const FormFields = ({ data, onChange, onSubmit, onCancel, submitLabel }) => (
+  <form onSubmit={onSubmit}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
+      <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+        <label>Degree</label>
+        <input type="text" value={data.degree} onChange={(e) => onChange({ ...data, degree: e.target.value })} required />
+      </div>
+      <div className="admin-form-group">
+        <label>Year</label>
+        <input type="text" placeholder="e.g. 2014 - 2018" value={data.year} onChange={(e) => onChange({ ...data, year: e.target.value })} />
+      </div>
+      <div className="admin-form-group">
+        <label>Order</label>
+        <input type="number" value={data.order} onChange={(e) => onChange({ ...data, order: Number(e.target.value) })} />
+      </div>
+      <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+        <label>Institute</label>
+        <input type="text" value={data.institute} onChange={(e) => onChange({ ...data, institute: e.target.value })} />
+      </div>
+      <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+        <label>Description (optional)</label>
+        <textarea value={data.description} onChange={(e) => onChange({ ...data, description: e.target.value })} rows={2} />
+      </div>
+    </div>
+    <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+      <button type="submit" className="btn-admin-primary">{submitLabel}</button>
+      {onCancel && <button type="button" className="btn-admin-secondary" onClick={onCancel}>Cancel</button>}
+    </div>
+  </form>
+);
+
 function EducationAdmin() {
   const dispatch = useDispatch();
   const education = useSelector((s) => s.adminData.education);
@@ -25,37 +56,6 @@ function EducationAdmin() {
     dispatch(educationThunks.update({ id: editing._id, ...editing }));
     setEditing(null);
   };
-
-  const FormFields = ({ data, onChange, onSubmit, onCancel, submitLabel }) => (
-    <form onSubmit={onSubmit}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
-        <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-          <label>Degree</label>
-          <input type="text" value={data.degree} onChange={(e) => onChange({ ...data, degree: e.target.value })} required />
-        </div>
-        <div className="admin-form-group">
-          <label>Year</label>
-          <input type="text" placeholder="e.g. 2014 - 2018" value={data.year} onChange={(e) => onChange({ ...data, year: e.target.value })} />
-        </div>
-        <div className="admin-form-group">
-          <label>Order</label>
-          <input type="number" value={data.order} onChange={(e) => onChange({ ...data, order: Number(e.target.value) })} />
-        </div>
-        <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-          <label>Institute</label>
-          <input type="text" value={data.institute} onChange={(e) => onChange({ ...data, institute: e.target.value })} />
-        </div>
-        <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-          <label>Description (optional)</label>
-          <textarea value={data.description} onChange={(e) => onChange({ ...data, description: e.target.value })} rows={2} />
-        </div>
-      </div>
-      <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
-        <button type="submit" className="btn-admin-primary">{submitLabel}</button>
-        {onCancel && <button type="button" className="btn-admin-secondary" onClick={onCancel}>Cancel</button>}
-      </div>
-    </form>
-  );
 
   return (
     <div>

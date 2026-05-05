@@ -4,6 +4,64 @@ import { experienceThunks } from '../../features/adminDataSlice';
 
 const empty = { title: '', company: '', year: '', responsibilities: [''], order: 0 };
 
+const updateResp = (data, setData, idx, val) => {
+  const resp = [...data.responsibilities];
+  resp[idx] = val;
+  setData({ ...data, responsibilities: resp });
+};
+
+const addResp = (data, setData) =>
+  setData({ ...data, responsibilities: [...data.responsibilities, ''] });
+
+const removeResp = (data, setData, idx) => {
+  const resp = data.responsibilities.filter((_, i) => i !== idx);
+  setData({ ...data, responsibilities: resp });
+};
+
+const ExperienceForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => (
+  <form onSubmit={onSubmit}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
+      <div className="admin-form-group">
+        <label>Job Title</label>
+        <input type="text" value={data.title} onChange={(e) => setData({ ...data, title: e.target.value })} required />
+      </div>
+      <div className="admin-form-group">
+        <label>Company</label>
+        <input type="text" value={data.company} onChange={(e) => setData({ ...data, company: e.target.value })} />
+      </div>
+      <div className="admin-form-group">
+        <label>Year / Period</label>
+        <input type="text" placeholder="e.g. 2021 - Present" value={data.year} onChange={(e) => setData({ ...data, year: e.target.value })} />
+      </div>
+      <div className="admin-form-group">
+        <label>Order</label>
+        <input type="number" value={data.order} onChange={(e) => setData({ ...data, order: Number(e.target.value) })} />
+      </div>
+      <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+        <label>Responsibilities</label>
+        {data.responsibilities.map((r, i) => (
+          <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+            <input
+              type="text"
+              value={r}
+              onChange={(e) => updateResp(data, setData, i, e.target.value)}
+              placeholder={`Responsibility ${i + 1}`}
+            />
+            <button type="button" className="btn-admin-danger" onClick={() => removeResp(data, setData, i)}>×</button>
+          </div>
+        ))}
+        <button type="button" className="btn-admin-secondary" onClick={() => addResp(data, setData)}>
+          + Add Responsibility
+        </button>
+      </div>
+    </div>
+    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+      <button type="submit" className="btn-admin-primary">{submitLabel}</button>
+      {onCancel && <button type="button" className="btn-admin-secondary" onClick={onCancel}>Cancel</button>}
+    </div>
+  </form>
+);
+
 function ExperienceAdmin() {
   const dispatch = useDispatch();
   const experience = useSelector((s) => s.adminData.experience);
@@ -13,20 +71,6 @@ function ExperienceAdmin() {
   useEffect(() => {
     dispatch(experienceThunks.fetch());
   }, [dispatch]);
-
-  const updateResp = (data, setData, idx, val) => {
-    const resp = [...data.responsibilities];
-    resp[idx] = val;
-    setData({ ...data, responsibilities: resp });
-  };
-
-  const addResp = (data, setData) =>
-    setData({ ...data, responsibilities: [...data.responsibilities, ''] });
-
-  const removeResp = (data, setData, idx) => {
-    const resp = data.responsibilities.filter((_, i) => i !== idx);
-    setData({ ...data, responsibilities: resp });
-  };
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -43,50 +87,6 @@ function ExperienceAdmin() {
     }));
     setEditing(null);
   };
-
-  const ExperienceForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => (
-    <form onSubmit={onSubmit}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
-        <div className="admin-form-group">
-          <label>Job Title</label>
-          <input type="text" value={data.title} onChange={(e) => setData({ ...data, title: e.target.value })} required />
-        </div>
-        <div className="admin-form-group">
-          <label>Company</label>
-          <input type="text" value={data.company} onChange={(e) => setData({ ...data, company: e.target.value })} />
-        </div>
-        <div className="admin-form-group">
-          <label>Year / Period</label>
-          <input type="text" placeholder="e.g. 2021 - Present" value={data.year} onChange={(e) => setData({ ...data, year: e.target.value })} />
-        </div>
-        <div className="admin-form-group">
-          <label>Order</label>
-          <input type="number" value={data.order} onChange={(e) => setData({ ...data, order: Number(e.target.value) })} />
-        </div>
-        <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-          <label>Responsibilities</label>
-          {data.responsibilities.map((r, i) => (
-            <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-              <input
-                type="text"
-                value={r}
-                onChange={(e) => updateResp(data, setData, i, e.target.value)}
-                placeholder={`Responsibility ${i + 1}`}
-              />
-              <button type="button" className="btn-admin-danger" onClick={() => removeResp(data, setData, i)}>×</button>
-            </div>
-          ))}
-          <button type="button" className="btn-admin-secondary" onClick={() => addResp(data, setData)}>
-            + Add Responsibility
-          </button>
-        </div>
-      </div>
-      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-        <button type="submit" className="btn-admin-primary">{submitLabel}</button>
-        {onCancel && <button type="button" className="btn-admin-secondary" onClick={onCancel}>Cancel</button>}
-      </div>
-    </form>
-  );
 
   return (
     <div>
