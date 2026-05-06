@@ -1520,3 +1520,71 @@ a {
     transition-delay: 0 !important;
   }
 }
+
+/* Resume download button */
+.resume-btn-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-resume-dl {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 32px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 70%, #7c3aed) 100%);
+  color: #fff;
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-color) 40%, transparent);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-resume-dl:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--accent-color) 55%, transparent);
+}
+
+.btn-resume-dl:active {
+  transform: translateY(0);
+}
+
+.btn-resume-dl__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 13px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.btn-resume-dl:hover .btn-resume-dl__icon {
+  transform: translateY(2px);
+}
+
+.btn-resume-dl__shine {
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 40%;
+  height: 220%;
+  background: rgba(255, 255, 255, 0.18);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.btn-resume-dl:hover .btn-resume-dl__shine {
+  left: 130%;
+}

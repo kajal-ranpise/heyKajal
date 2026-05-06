@@ -38,6 +38,23 @@ function Resume() {
         <div className="container section-title" data-aos="fade-up">
           <h2>Resume</h2>
           <p>Turning ideas into scalable web solutions — here's my journey.</p>
+          {about.resumeUrl && (
+            <div className="resume-btn-wrap">
+              <a
+                href={about.resumeUrl}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-resume-dl"
+              >
+                <span className="btn-resume-dl__icon">
+                  <i className="bi bi-download"></i>
+                </span>
+                <span className="btn-resume-dl__text">Download Resume</span>
+                <span className="btn-resume-dl__shine" />
+              </a>
+            </div>
+          )}
         </div>
 
         <div className="container">
