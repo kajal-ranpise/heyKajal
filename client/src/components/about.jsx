@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import profileImg from "../assets/img/profile-img.jpg";
 
-const StatCounter = ({ end, suffix = "+", duration = 2000 }) => {
+/* const StatCounter = ({ end, suffix = "+", duration = 2000 }) => {
   const numEnd = Number(end) || 0;
   const [started, setStarted] = useState(false);
   const [count, setCount] = useState(0);
@@ -31,7 +31,7 @@ const StatCounter = ({ end, suffix = "+", duration = 2000 }) => {
       {suffix}
     </motion.span>
   );
-};
+}; */
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -99,6 +99,12 @@ function About() {
                         <strong>Role:</strong> <span>{about.role}</span>
                       </li>
                     )}
+                    {about.email && (
+                      <li>
+                        <i className="bi bi-chevron-right"></i>
+                        <strong>Email:</strong> <span>{about.email}</span>
+                      </li>
+                    )}
                   </ul>
                 </div>
                 <div className="col-lg-6">
@@ -109,12 +115,7 @@ function About() {
                         <strong>Degree:</strong> <span>{about.degree}</span>
                       </li>
                     )}
-                    {about.email && (
-                      <li>
-                        <i className="bi bi-chevron-right"></i>
-                        <strong>Email:</strong> <span>{about.email}</span>
-                      </li>
-                    )}
+
                     {about.availability && (
                       <li>
                         <i className="bi bi-chevron-right"></i>
@@ -156,7 +157,7 @@ function About() {
                 </div>
               </div>
             </div>
-              {about.longDescription && <p>{about.longDescription}</p>}
+            {about.longDescription && <p>{about.longDescription}</p>}
           </div>
         </div>
       </section>
