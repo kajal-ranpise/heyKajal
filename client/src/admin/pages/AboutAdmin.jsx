@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAdminAbout, saveAdminAbout, clearSuccessMsg } from '../../features/adminDataSlice';
 import S3ImageUpload from '../components/S3ImageUpload';
+import S3FileUpload from '../components/S3FileUpload';
 
 const fields = [
   { key: 'name', label: 'Full Name' },
   { key: 'role', label: 'Role / Title' },
+  { key: 'shortDescription', label: 'Short Description (italic, shown below title)', textarea: true },
+  { key: 'longDescription', label: 'Long Description (paragraph, shown above details)', textarea: true },
   { key: 'heroTitle', label: 'Hero Title' },
   { key: 'heroSubtitle', label: 'Hero Subtitle', textarea: true },
   { key: 'description', label: 'About Description', textarea: true },
@@ -65,6 +68,15 @@ function AboutAdmin() {
                 onChange={(url) => handleChange('profileImg', url)}
                 folder="profile"
                 label="Profile Image"
+              />
+            </div>
+            <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+              <label>Resume (PDF)</label>
+              <S3FileUpload
+                value={form.resumeUrl}
+                onChange={(url) => handleChange('resumeUrl', url)}
+                folder="resume"
+                label="Resume PDF"
               />
             </div>
             {fields.map(({ key, label, textarea }) => (

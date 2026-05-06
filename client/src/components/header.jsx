@@ -41,14 +41,24 @@ function Header() {
         <div className="container-fluid position-relative d-flex align-items-center justify-content-between">
           {/* Logo */}
           <Link to="/" className="logo d-flex align-items-center me-auto me-xl-0">
-            <motion.h1
-              className="sitename"
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
+            <motion.div
+              className="logo-badge"
+              initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.55, type: "spring", stiffness: 220, damping: 16 }}
+              whileHover={{ scale: 1.12, rotate: 5 }}
+              whileTap={{ scale: 0.93 }}
             >
-              Kajal
-            </motion.h1>
+              K
+            </motion.div>
+            <motion.span
+              className="logo-wordmark"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45, delay: 0.15 }}
+            >
+              ajal<span className="logo-dot">.</span>
+            </motion.span>
           </Link>
 
           {/* Desktop Nav */}

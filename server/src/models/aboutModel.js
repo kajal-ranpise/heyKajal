@@ -12,9 +12,12 @@ const aboutSchema = new mongoose.Schema({
   github: { type: String, default: '' },
   linkedin: { type: String, default: '' },
   dob: { type: String, default: '' },
+  shortDescription: { type: String, default: '' },
+  longDescription: { type: String, default: '' },
   heroTitle: { type: String, default: '' },
   heroSubtitle: { type: String, default: '' },
   profileImg: { type: String, default: '' },
+  resumeUrl: { type: String, default: '' },
 });
 
 module.exports = mongoose.model('About', aboutSchema);

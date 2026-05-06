@@ -1,31 +1,35 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import profileImg from "../assets/img/profile-img.jpg";
 
 const StatCounter = ({ end, suffix = "+", duration = 2000 }) => {
+  const numEnd = Number(end) || 0;
+  const [started, setStarted] = useState(false);
   const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!started) return;
     let raf;
     const startTime = performance.now();
     const tick = (now) => {
       const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-      setCount(Math.round(eased * end));
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * numEnd));
       if (progress < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [isInView, end, duration]);
+  }, [started, numEnd, duration]);
 
   return (
-    <span ref={ref}>
-      {count}{suffix}
-    </span>
+    <motion.span
+      onViewportEnter={() => setStarted(true)}
+      viewport={{ once: true, amount: 0 }}
+    >
+      {count}
+      {suffix}
+    </motion.span>
   );
 };
 
@@ -42,7 +46,6 @@ function About() {
   const about = useSelector((state) => state.publicData.about);
   const skills = useSelector((state) => state.publicData.skills);
   const stats = useSelector((state) => state.publicData.stats);
-
   return (
     <main className="main about-page">
       {/* About Section */}
@@ -71,6 +74,10 @@ function About() {
             {/* Info */}
             <div className="col-lg-8 content">
               <h2>{about.role || "Full Stack & Web App Developer"}</h2>
+              {about.shortDescription && (
+                <p className="fst-italic">{about.shortDescription}</p>
+              )}
+
               <div className="row">
                 <div className="col-lg-6">
                   <ul>
@@ -149,6 +156,7 @@ function About() {
                 </div>
               </div>
             </div>
+              {about.longDescription && <p>{about.longDescription}</p>}
           </div>
         </div>
       </section>
@@ -252,7 +260,8 @@ function About() {
                         marginBottom: "8px",
                       }}
                     >
-                      <StatCounter end={stat.end} suffix={stat.suffix || "+"} />
+                      {stat.end}
+                      {/* <StatCounter end={stat.end} suffix={stat.suffix || "+"} /> */}
                     </h3>
                     <p
                       style={{ margin: 0, fontWeight: "500", fontSize: "14px" }}

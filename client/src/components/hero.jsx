@@ -120,6 +120,17 @@ function Hero() {
             <Link to="/projects" className="btn-outline-hero">
               View Work
             </Link>
+            {about.resumeUrl && (
+              <a
+                href={about.resumeUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-outline-hero"
+                download="Resume.pdf"
+              >
+                <i className="bi bi-download" /> &nbsp; Resume
+              </a>
+            )}
           </motion.div>
 
           <motion.div className="hero-social" {...fadeUp(0.70)}>
