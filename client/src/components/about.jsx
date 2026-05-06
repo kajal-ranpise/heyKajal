@@ -60,14 +60,50 @@ function About() {
             {/* Profile image */}
             <div className="col-lg-4 text-center">
               <motion.div
-                whileHover={{ scale: 1.02, rotate: 1 }}
-                transition={{ duration: 0.4 }}
+                className="profile-img-wrapper"
+                initial={{ opacity: 0, scale: 0.85 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
-                <img
-                  src={profileImg}
-                  className="img-fluid"
-                  alt="Kajal Ranpise"
-                />
+                {/* Circle image */}
+                <div className="profile-circle-img">
+                  <img src={profileImg} alt="Kajal Ranpise" />
+                </div>
+
+                {/* React — top */}
+              {/*   <div className="orbit-icon orbit-icon-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="13" height="13">
+                    <circle cx="50" cy="50" r="10" fill="#61DAFB" />
+                    <ellipse cx="50" cy="50" rx="46" ry="17" fill="none" stroke="#61DAFB" strokeWidth="5" />
+                    <ellipse cx="50" cy="50" rx="46" ry="17" fill="none" stroke="#61DAFB" strokeWidth="5" transform="rotate(60 50 50)" />
+                    <ellipse cx="50" cy="50" rx="46" ry="17" fill="none" stroke="#61DAFB" strokeWidth="5" transform="rotate(120 50 50)" />
+                  </svg>
+                  <span>React</span>
+                </div>
+
+                <div className="orbit-icon orbit-icon-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="13" height="13">
+                    <polygon points="50,3 95,26.5 95,73.5 50,97 5,73.5 5,26.5" fill="#3f9142" />
+                    <text x="50" y="65" textAnchor="middle" fill="white" fontSize="38" fontWeight="700" fontFamily="Arial">N</text>
+                  </svg>
+                  <span>Node.js</span>
+                </div>
+
+                <div className="orbit-icon orbit-icon-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="13" height="13">
+                    <ellipse cx="50" cy="22" rx="38" ry="14" fill="#00758F" />
+                    <rect x="12" y="22" width="76" height="12" fill="#00758F" />
+                    <ellipse cx="50" cy="34" rx="38" ry="14" fill="#00758F" />
+                    <rect x="12" y="34" width="76" height="18" fill="#005f73" />
+                    <ellipse cx="50" cy="52" rx="38" ry="14" fill="#00758F" />
+                    <rect x="12" y="52" width="76" height="18" fill="#005f73" />
+                    <ellipse cx="50" cy="70" rx="38" ry="14" fill="#00758F" />
+                    <rect x="12" y="70" width="76" height="12" fill="#005f73" />
+                    <ellipse cx="50" cy="82" rx="38" ry="14" fill="#00758F" />
+                  </svg>
+                  <span>MySQL</span>
+                </div> */}
               </motion.div>
             </div>
 
