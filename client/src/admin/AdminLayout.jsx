@@ -14,6 +14,7 @@ const navItems = [
   { to: '/admin/experience', icon: 'bi-briefcase', label: 'Experience' },
   { to: '/admin/projects', icon: 'bi-folder', label: 'Projects' },
   { to: '/admin/services', icon: 'bi-gear', label: 'Services' },
+  { to: '/admin/achievements', icon: 'bi-trophy', label: 'Achievements' },
 ];
 
 function AdminLayout() {

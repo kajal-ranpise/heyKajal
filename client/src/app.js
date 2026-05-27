@@ -34,6 +34,8 @@ import EducationAdmin from "./admin/pages/EducationAdmin";
 import ExperienceAdmin from "./admin/pages/ExperienceAdmin";
 import ProjectsAdmin from "./admin/pages/ProjectsAdmin";
 import ServicesAdmin from "./admin/pages/ServicesAdmin";
+import AchievementsAdmin from "./admin/pages/AchievementsAdmin";
+import Achievements from "./components/achievements";
 
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import AOS from "aos";
@@ -80,6 +82,7 @@ function App() {
           <Route path="experience" element={<ExperienceAdmin />} />
           <Route path="projects" element={<ProjectsAdmin />} />
           <Route path="services" element={<ServicesAdmin />} />
+          <Route path="achievements" element={<AchievementsAdmin />} />
         </Route>
 
         {/* Public portfolio routes */}
@@ -96,6 +99,7 @@ function App() {
                   <Route path="/services" element={<Services />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/project-details/:id" element={<ProjectDetails />} />
+                  <Route path="/achievements" element={<Achievements />} />
                   <Route path="/contact" element={<Contact />} />
                 </Routes>
               </main>

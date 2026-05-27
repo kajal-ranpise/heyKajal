@@ -194,9 +194,9 @@ function Resume() {
                         <div
                           key={cat._id}
                           style={{
-                            display: "flex",
-                            gap: 10,
-                            flexWrap: "wrap",
+                            display: "grid",
+                            gridTemplateColumns: "120px 20px 1fr",
+                            gap: "0 8px",
                             alignItems: "baseline",
                           }}
                         >
@@ -205,8 +205,6 @@ function Resume() {
                               fontWeight: 700,
                               fontSize: "0.88rem",
                               color: "var(--heading-color)",
-                              minWidth: 120,
-                              flexShrink: 0,
                             }}
                           >
                             {cat.category}
@@ -215,7 +213,6 @@ function Resume() {
                             style={{
                               color: "var(--accent-color)",
                               fontWeight: 700,
-                              flexShrink: 0,
                             }}
                           >
                             —
