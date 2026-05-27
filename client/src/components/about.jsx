@@ -288,7 +288,7 @@ function About() {
                 >
                   <div
                     className="stats-item text-center w-100 h-100"
-                    style={{ padding: "32px 20px" }}
+                    style={{ padding: "18px 16px" }}
                   >
                     <h3
                       style={{

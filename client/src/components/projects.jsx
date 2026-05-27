@@ -89,111 +89,40 @@ function Projects() {
             {projects.map((item, idx) => (
               <motion.div
                 key={item._id}
-                className={`col-lg-4 col-md-6 portfolio-item isotope-item ${(item.category || []).join(" ")}`}
+                className={`col-lg-6 col-md-6 portfolio-item isotope-item ${(item.category || []).join(" ")}`}
                 custom={idx}
                 variants={cardVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.1 }}
               >
-                <motion.div
-                  className="project-card"
-                  whileHover={{ y: -8 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  {/* Card Image */}
+                <Link to={`/project-details/${item.slug}`} className="project-card">
+                  {/* Image */}
                   <div className="card-img-wrapper">
                     {item.imgUrl ? (
-                      <img
-                        src={item.imgUrl}
-                        alt={item.title}
-                        loading="lazy"
-                      />
+                      <img src={item.imgUrl} alt={item.title} loading="lazy" />
                     ) : (
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "40px",
-                          color: "var(--accent-color)",
-                          opacity: 0.4,
-                        }}
-                      >
-                        <i className="bi bi-code-square"></i>
-                      </div>
+                      <i className="bi bi-code-square card-img-placeholder" />
                     )}
-
-                    {/* Hover overlay with action buttons */}
-                    <div className="card-img-overlay">
-                      {item.imgUrl && (
-                        <a
-                          href={item.imgUrl}
-                          data-gallery={item.gallery || "portfolio"}
-                          className="glightbox overlay-btn"
-                          title="Preview"
-                          aria-label="Preview image"
-                        >
-                          <i className="bi bi-zoom-in"></i>
-                        </a>
-                      )}
-                      <Link
-                        to={`/project-details/${item.slug}`}
-                        className="overlay-btn"
-                        title="View Details"
-                        aria-label="View project details"
-                      >
-                        <i className="bi bi-arrow-right"></i>
-                      </Link>
-                    </div>
                   </div>
 
-                  {/* Card Content */}
+                  {/* Info */}
                   <div className="card-body">
-                    <h3 className="card-title">{item.title}</h3>
-
-                    {item.desc && (
-                      <p className="card-desc">{item.desc}</p>
-                    )}
-
-                    {/* Tech Stack Badges */}
+                    <div className="card-title-row">
+                      <h3 className="card-title">{item.title}</h3>
+                      {item.year && (
+                        <span className="card-year">{item.year}</span>
+                      )}
+                    </div>
                     {item.tech && item.tech.length > 0 && (
                       <div className="tech-badges">
                         {item.tech.map((t) => (
-                          <span key={t} className="tech-badge">
-                            {t}
-                          </span>
+                          <span key={t} className="tech-badge">{t}</span>
                         ))}
                       </div>
                     )}
-
-                    {/* Footer row */}
-                    <div className="card-footer-row">
-                      <span className="card-meta-info">
-                        {item.industry && (
-                          <>
-                            <i className="bi bi-briefcase me-1"></i>
-                            {item.industry}
-                          </>
-                        )}
-                        {item.year && !item.industry && (
-                          <>
-                            <i className="bi bi-calendar3 me-1"></i>
-                            {item.year}
-                          </>
-                        )}
-                      </span>
-                      <Link
-                        to={`/project-details/${item.slug}`}
-                        className="details-link"
-                      >
-                        Details <i className="bi bi-arrow-right"></i>
-                      </Link>
-                    </div>
                   </div>
-                </motion.div>
+                </Link>
               </motion.div>
             ))}
           </div>
