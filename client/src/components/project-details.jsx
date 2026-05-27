@@ -60,7 +60,7 @@ function ProjectDetails() {
 
         {/* ── Image + Sidebar ── */}
         <div className="container" {...fadeUp(80)}>
-          <div className="row gy-4">
+          <div className="row gy-3">
 
             {/* Image */}
             <div className="col-lg-6">
@@ -135,7 +135,7 @@ function ProjectDetails() {
 
         {/* ── Short Description ── */}
         {project.desc && (
-          <div className="container mt-4" {...fadeUp(100)}>
+          <div className="container mt-3" {...fadeUp(100)}>
             <div className="pd-section-card pd-desc-card">
               <div className="pd-section-icon"><i className="bi bi-file-text" /></div>
               <div>
@@ -148,8 +148,8 @@ function ProjectDetails() {
 
         {/* ── Features + Responsibilities ── */}
         {(project.features?.length > 0 || project.responsibilities?.length > 0) && (
-          <div className="container mt-4">
-            <div className="row gy-4">
+          <div className="container mt-3">
+            <div className="row gy-3">
               {project.features?.length > 0 && (
                 <div className="col-lg-6" {...fadeUp(120)}>
                   <div className="pd-card pd-list-card h-100">
@@ -186,7 +186,7 @@ function ProjectDetails() {
 
         {/* ── Challenges & Solutions ── */}
         {project.challenges?.length > 0 && (
-          <div className="container mt-4" {...fadeUp(140)}>
+          <div className="container mt-3" {...fadeUp(140)}>
             <div className="pd-card">
               <div className="pd-list-header">
                 <span className="pd-list-icon pd-icon-orange"><i className="bi bi-lightning-charge" /></span>
@@ -219,7 +219,7 @@ function ProjectDetails() {
 
         {/* ── Project Outcome ── */}
         {project.outcome && (
-          <div className="container mt-4 mb-2" {...fadeUp(160)}>
+          <div className="container mt-3 mb-1" {...fadeUp(160)}>
             <div className="pd-section-card pd-outcome-card">
               <div className="pd-section-icon pd-icon-gold"><i className="bi bi-trophy" /></div>
               <div>

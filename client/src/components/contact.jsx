@@ -72,7 +72,7 @@ function Contact() {
                   style={{
                     border: 0,
                     width: "100%",
-                    height: "240px",
+                    height: "170px",
                     borderRadius: "0 0 var(--radius-lg) var(--radius-lg)",
                   }}
                   allowFullScreen
@@ -97,7 +97,7 @@ function Contact() {
                 method="POST"
                 className="php-email-form"
               >
-                <div className="row gy-4">
+                <div className="row gy-3">
                   <div className="col-md-6">
                     <label htmlFor="name-field" className="pb-2">
                       Your Name
@@ -147,7 +147,7 @@ function Contact() {
                     <textarea
                       name="message"
                       id="message-field"
-                      rows="8"
+                      rows="5"
                       className="form-control"
                       placeholder="Tell me about your project..."
                       required

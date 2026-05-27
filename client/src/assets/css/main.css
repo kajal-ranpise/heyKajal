@@ -639,7 +639,7 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 28px 0;
   scroll-margin-top: 100px;
   overflow: clip;
 }
@@ -657,15 +657,15 @@ section,
 --------------------------------------------------------------*/
 .section-title {
   text-align: center;
-  padding-bottom: 60px;
+  padding-bottom: 20px;
   position: relative;
 }
 
 .section-title h2 {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   position: relative;
 }
 
