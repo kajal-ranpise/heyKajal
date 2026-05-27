@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { skillThunks } from '../../features/adminDataSlice';
+import ConfirmModal from '../components/ConfirmModal';
 
 const empty = { name: '', val: 50, order: 0 };
 
@@ -9,6 +10,7 @@ function SkillsAdmin() {
   const skills = useSelector((s) => s.adminData.skills);
   const [newSkill, setNewSkill] = useState(empty);
   const [editing, setEditing] = useState(null);
+  const [pending, setPending] = useState(null);
 
   useEffect(() => {
     dispatch(skillThunks.fetch());
@@ -16,18 +18,28 @@ function SkillsAdmin() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch(skillThunks.create(newSkill));
-    setNewSkill(empty);
+    setPending({ fn: () => { dispatch(skillThunks.create(newSkill)); setNewSkill(empty); setPending(null); }, msg: 'Add this skill?' });
   };
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    dispatch(skillThunks.update({ id: editing._id, ...editing }));
-    setEditing(null);
+    setPending({ fn: () => { dispatch(skillThunks.update({ id: editing._id, ...editing })); setEditing(null); setPending(null); }, msg: 'Save changes to this skill?' });
+  };
+
+  const handleDelete = (id) => {
+    setPending({ fn: () => { dispatch(skillThunks.remove(id)); setPending(null); }, msg: 'Delete this skill? This cannot be undone.', variant: 'danger' });
   };
 
   return (
     <div>
+      {pending && (
+        <ConfirmModal
+          message={pending.msg}
+          variant={pending.variant}
+          onConfirm={pending.fn}
+          onCancel={() => setPending(null)}
+        />
+      )}
       <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#1e293b', marginBottom: 20 }}>
         Skills
       </h2>
@@ -135,7 +147,7 @@ function SkillsAdmin() {
                 <td>
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button className="btn-admin-secondary" onClick={() => setEditing(s)}>Edit</button>
-                    <button className="btn-admin-danger" onClick={() => dispatch(skillThunks.remove(s._id))}>Delete</button>
+                    <button className="btn-admin-danger" onClick={() => handleDelete(s._id)}>Delete</button>
                   </div>
                 </td>
               </tr>

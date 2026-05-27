@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAdminAbout, saveAdminAbout, clearSuccessMsg } from '../../features/adminDataSlice';
 import S3ImageUpload from '../components/S3ImageUpload';
 import S3FileUpload from '../components/S3FileUpload';
+import ConfirmModal from '../components/ConfirmModal';
 
 const fields = [
   { key: 'name', label: 'Full Name' },
@@ -26,6 +27,7 @@ function AboutAdmin() {
   const dispatch = useDispatch();
   const { about, successMsg } = useSelector((s) => s.adminData);
   const [form, setForm] = useState({});
+  const [pending, setPending] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAdminAbout());
@@ -46,11 +48,19 @@ function AboutAdmin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(saveAdminAbout(form));
+    setPending({ fn: () => { dispatch(saveAdminAbout(form)); setPending(null); }, msg: 'Save changes to About Info?' });
   };
 
   return (
     <div>
+      {pending && (
+        <ConfirmModal
+          message={pending.msg}
+          variant={pending.variant}
+          onConfirm={pending.fn}
+          onCancel={() => setPending(null)}
+        />
+      )}
       <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#1e293b', marginBottom: 20 }}>
         About Info
       </h2>

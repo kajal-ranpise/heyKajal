@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectThunks } from '../../features/adminDataSlice';
 import S3ImageUpload from '../components/S3ImageUpload';
+import ConfirmModal from '../components/ConfirmModal';
 
 const CATEGORIES = ['filter-react', 'filter-node', 'filter-php', 'filter-mysql', 'filter-mongodb'];
 
@@ -257,6 +258,7 @@ function ProjectsAdmin() {
   const [form, setForm] = useState(empty);
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [pending, setPending] = useState(null);
 
   useEffect(() => {
     dispatch(projectThunks.fetch());
@@ -264,19 +266,28 @@ function ProjectsAdmin() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch(projectThunks.create(toPayload(form)));
-    setForm(empty);
-    setShowForm(false);
+    setPending({ fn: () => { dispatch(projectThunks.create(toPayload(form))); setForm(empty); setShowForm(false); setPending(null); }, msg: 'Add this project?' });
   };
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    dispatch(projectThunks.update({ id: editing._id, ...toPayload(editing) }));
-    setEditing(null);
+    setPending({ fn: () => { dispatch(projectThunks.update({ id: editing._id, ...toPayload(editing) })); setEditing(null); setPending(null); }, msg: 'Save changes to this project?' });
+  };
+
+  const handleDelete = (id) => {
+    setPending({ fn: () => { dispatch(projectThunks.remove(id)); setPending(null); }, msg: 'Delete this project? This cannot be undone.', variant: 'danger' });
   };
 
   return (
     <div>
+      {pending && (
+        <ConfirmModal
+          message={pending.msg}
+          variant={pending.variant}
+          onConfirm={pending.fn}
+          onCancel={() => setPending(null)}
+        />
+      )}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>Projects</h2>
         <button className="btn-admin-primary" onClick={() => setShowForm(!showForm)}>
@@ -318,7 +329,7 @@ function ProjectsAdmin() {
                 <td>
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button className="btn-admin-secondary" onClick={() => { setEditing(fromRecord(p)); setShowForm(false); }}>Edit</button>
-                    <button className="btn-admin-danger" onClick={() => dispatch(projectThunks.remove(p._id))}>Delete</button>
+                    <button className="btn-admin-danger" onClick={() => handleDelete(p._id)}>Delete</button>
                   </div>
                 </td>
               </tr>

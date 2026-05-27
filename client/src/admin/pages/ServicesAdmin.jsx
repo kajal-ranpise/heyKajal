@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { serviceThunks } from '../../features/adminDataSlice';
+import ConfirmModal from '../components/ConfirmModal';
 
 const COLOR_CLASSES = ['item-cyan', 'item-orange', 'item-teal', 'item-red', 'item-indigo', 'item-pink'];
 const ICONS = [
@@ -52,6 +53,7 @@ function ServicesAdmin() {
   const [form, setForm] = useState(empty);
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [pending, setPending] = useState(null);
 
   useEffect(() => {
     dispatch(serviceThunks.fetch());
@@ -59,19 +61,28 @@ function ServicesAdmin() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch(serviceThunks.create(form));
-    setForm(empty);
-    setShowForm(false);
+    setPending({ fn: () => { dispatch(serviceThunks.create(form)); setForm(empty); setShowForm(false); setPending(null); }, msg: 'Add this service?' });
   };
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    dispatch(serviceThunks.update({ id: editing._id, ...editing }));
-    setEditing(null);
+    setPending({ fn: () => { dispatch(serviceThunks.update({ id: editing._id, ...editing })); setEditing(null); setPending(null); }, msg: 'Save changes to this service?' });
+  };
+
+  const handleDelete = (id) => {
+    setPending({ fn: () => { dispatch(serviceThunks.remove(id)); setPending(null); }, msg: 'Delete this service? This cannot be undone.', variant: 'danger' });
   };
 
   return (
     <div>
+      {pending && (
+        <ConfirmModal
+          message={pending.msg}
+          variant={pending.variant}
+          onConfirm={pending.fn}
+          onCancel={() => setPending(null)}
+        />
+      )}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>Services</h2>
         <button className="btn-admin-primary" onClick={() => { setShowForm(!showForm); setEditing(null); }}>
@@ -112,7 +123,7 @@ function ServicesAdmin() {
                 <td>
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button className="btn-admin-secondary" onClick={() => { setEditing(s); setShowForm(false); }}>Edit</button>
-                    <button className="btn-admin-danger" onClick={() => dispatch(serviceThunks.remove(s._id))}>Delete</button>
+                    <button className="btn-admin-danger" onClick={() => handleDelete(s._id)}>Delete</button>
                   </div>
                 </td>
               </tr>

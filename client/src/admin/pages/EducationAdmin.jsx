@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { educationThunks } from '../../features/adminDataSlice';
+import ConfirmModal from '../components/ConfirmModal';
 
 const empty = { degree: '', year: '', institute: '', description: '', order: 0 };
 
@@ -40,6 +41,7 @@ function EducationAdmin() {
   const education = useSelector((s) => s.adminData.education);
   const [form, setForm] = useState(empty);
   const [editing, setEditing] = useState(null);
+  const [pending, setPending] = useState(null);
 
   useEffect(() => {
     dispatch(educationThunks.fetch());
@@ -47,18 +49,28 @@ function EducationAdmin() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch(educationThunks.create(form));
-    setForm(empty);
+    setPending({ fn: () => { dispatch(educationThunks.create(form)); setForm(empty); setPending(null); }, msg: 'Add this education entry?' });
   };
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    dispatch(educationThunks.update({ id: editing._id, ...editing }));
-    setEditing(null);
+    setPending({ fn: () => { dispatch(educationThunks.update({ id: editing._id, ...editing })); setEditing(null); setPending(null); }, msg: 'Save changes to this education entry?' });
+  };
+
+  const handleDelete = (id) => {
+    setPending({ fn: () => { dispatch(educationThunks.remove(id)); setPending(null); }, msg: 'Delete this education entry? This cannot be undone.', variant: 'danger' });
   };
 
   return (
     <div>
+      {pending && (
+        <ConfirmModal
+          message={pending.msg}
+          variant={pending.variant}
+          onConfirm={pending.fn}
+          onCancel={() => setPending(null)}
+        />
+      )}
       <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#1e293b', marginBottom: 20 }}>Education</h2>
 
       <div className="admin-card">
@@ -88,7 +100,7 @@ function EducationAdmin() {
                 <td>
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button className="btn-admin-secondary" onClick={() => setEditing(e)}>Edit</button>
-                    <button className="btn-admin-danger" onClick={() => dispatch(educationThunks.remove(e._id))}>Delete</button>
+                    <button className="btn-admin-danger" onClick={() => handleDelete(e._id)}>Delete</button>
                   </div>
                 </td>
               </tr>

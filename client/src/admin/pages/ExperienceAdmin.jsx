@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { experienceThunks } from '../../features/adminDataSlice';
+import ConfirmModal from '../components/ConfirmModal';
 
 const empty = { title: '', company: '', year: '', responsibilities: [''], order: 0 };
 
@@ -67,6 +68,7 @@ function ExperienceAdmin() {
   const experience = useSelector((s) => s.adminData.experience);
   const [form, setForm] = useState(empty);
   const [editing, setEditing] = useState(null);
+  const [pending, setPending] = useState(null);
 
   useEffect(() => {
     dispatch(experienceThunks.fetch());
@@ -74,22 +76,28 @@ function ExperienceAdmin() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch(experienceThunks.create({ ...form, responsibilities: form.responsibilities.filter(Boolean) }));
-    setForm(empty);
+    setPending({ fn: () => { dispatch(experienceThunks.create({ ...form, responsibilities: form.responsibilities.filter(Boolean) })); setForm(empty); setPending(null); }, msg: 'Add this experience entry?' });
   };
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    dispatch(experienceThunks.update({
-      id: editing._id,
-      ...editing,
-      responsibilities: editing.responsibilities.filter(Boolean),
-    }));
-    setEditing(null);
+    setPending({ fn: () => { dispatch(experienceThunks.update({ id: editing._id, ...editing, responsibilities: editing.responsibilities.filter(Boolean) })); setEditing(null); setPending(null); }, msg: 'Save changes to this experience entry?' });
+  };
+
+  const handleDelete = (id) => {
+    setPending({ fn: () => { dispatch(experienceThunks.remove(id)); setPending(null); }, msg: 'Delete this experience entry? This cannot be undone.', variant: 'danger' });
   };
 
   return (
     <div>
+      {pending && (
+        <ConfirmModal
+          message={pending.msg}
+          variant={pending.variant}
+          onConfirm={pending.fn}
+          onCancel={() => setPending(null)}
+        />
+      )}
       <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#1e293b', marginBottom: 20 }}>Experience</h2>
 
       <div className="admin-card">
@@ -122,7 +130,7 @@ function ExperienceAdmin() {
                 <td>
                   <div style={{ display: 'flex', gap: 6 }}>
                     <button className="btn-admin-secondary" onClick={() => setEditing({ ...exp, responsibilities: exp.responsibilities || [''] })}>Edit</button>
-                    <button className="btn-admin-danger" onClick={() => dispatch(experienceThunks.remove(exp._id))}>Delete</button>
+                    <button className="btn-admin-danger" onClick={() => handleDelete(exp._id)}>Delete</button>
                   </div>
                 </td>
               </tr>
