@@ -43,6 +43,7 @@ export const educationThunks = makeListThunks('Education', 'education');
 export const experienceThunks = makeListThunks('Experience', 'experience');
 export const projectThunks = makeListThunks('Project', 'projects');
 export const serviceThunks = makeListThunks('Service', 'services');
+export const skillCategoryThunks = makeListThunks('SkillCategory', 'skill-categories');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -71,6 +72,7 @@ const adminDataSlice = createSlice({
     experience: [],
     projects: [],
     services: [],
+    skillCategories: [],
     loading: false,
     successMsg: '',
   },
@@ -91,6 +93,7 @@ const adminDataSlice = createSlice({
     listHandlers('experience', experienceThunks)(builder);
     listHandlers('projects', projectThunks)(builder);
     listHandlers('services', serviceThunks)(builder);
+    listHandlers('skillCategories', skillCategoryThunks)(builder);
   },
 });
 

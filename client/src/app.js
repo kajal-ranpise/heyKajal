@@ -9,6 +9,7 @@ import {
   fetchExperience,
   fetchProjects,
   fetchServices,
+  fetchSkillCategories,
 } from "./features/publicDataSlice";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -27,6 +28,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import PrivateRoute from "./admin/PrivateRoute";
 import AboutAdmin from "./admin/pages/AboutAdmin";
 import SkillsAdmin from "./admin/pages/SkillsAdmin";
+import SkillCategoriesAdmin from "./admin/pages/SkillCategoriesAdmin";
 import StatsAdmin from "./admin/pages/StatsAdmin";
 import EducationAdmin from "./admin/pages/EducationAdmin";
 import ExperienceAdmin from "./admin/pages/ExperienceAdmin";
@@ -52,6 +54,7 @@ function App() {
     dispatch(fetchExperience());
     dispatch(fetchProjects());
     dispatch(fetchServices());
+    dispatch(fetchSkillCategories());
   }, [dispatch]);
 
   return (
@@ -71,6 +74,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="about" element={<AboutAdmin />} />
           <Route path="skills" element={<SkillsAdmin />} />
+          <Route path="skill-categories" element={<SkillCategoriesAdmin />} />
           <Route path="stats" element={<StatsAdmin />} />
           <Route path="education" element={<EducationAdmin />} />
           <Route path="experience" element={<ExperienceAdmin />} />

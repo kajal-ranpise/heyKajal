@@ -9,7 +9,7 @@ function S3FileUpload({ value, onChange, folder = 'resume', label = 'File', acce
   const handleFile = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.type !== contentType) {
+    if (contentType && file.type !== contentType) {
       setError(`Only ${accept} files are allowed`);
       return;
     }

@@ -50,4 +50,10 @@ router.post('/services', c.createService);
 router.put('/services/:id', c.updateService);
 router.delete('/services/:id', c.deleteService);
 
+// Skill Categories
+router.get('/skill-categories', c.getSkillCategories);
+router.post('/skill-categories', c.createSkillCategory);
+router.put('/skill-categories/:id', c.updateSkillCategory);
+router.delete('/skill-categories/:id', c.deleteSkillCategory);
+
 module.exports = router;

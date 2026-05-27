@@ -5,6 +5,7 @@ const Education = require('../models/educationModel');
 const Experience = require('../models/experienceModel');
 const Project = require('../models/projectModel');
 const Service = require('../models/serviceModel');
+const SkillCategory = require('../models/skillCategoryModel');
 
 // ── About (singleton) ────────────────────────────────────────────────────────
 exports.getAbout = async (req, res) => {
@@ -92,5 +93,17 @@ exports.updateService = async (req, res) => {
 };
 exports.deleteService = async (req, res) => {
   await Service.findByIdAndDelete(req.params.id);
+  res.json({ message: 'Deleted' });
+};
+
+// ── Skill Categories ──────────────────────────────────────────────────────────
+exports.getSkillCategories = async (req, res) => res.json(await SkillCategory.find().sort('order'));
+exports.createSkillCategory = async (req, res) => res.status(201).json(await SkillCategory.create(req.body));
+exports.updateSkillCategory = async (req, res) => {
+  const doc = await SkillCategory.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  doc ? res.json(doc) : res.status(404).json({ message: 'Not found' });
+};
+exports.deleteSkillCategory = async (req, res) => {
+  await SkillCategory.findByIdAndDelete(req.params.id);
   res.json({ message: 'Deleted' });
 };

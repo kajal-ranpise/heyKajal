@@ -38,6 +38,11 @@ export const fetchServices = createAsyncThunk('publicData/fetchServices', async 
   return data;
 });
 
+export const fetchSkillCategories = createAsyncThunk('publicData/fetchSkillCategories', async () => {
+  const { data } = await axios.get(`${BASE}/skill-categories`);
+  return data;
+});
+
 const publicDataSlice = createSlice({
   name: 'publicData',
   initialState: {
@@ -48,6 +53,7 @@ const publicDataSlice = createSlice({
     experience: [],
     projects: [],
     services: [],
+    skillCategories: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -58,7 +64,8 @@ const publicDataSlice = createSlice({
       .addCase(fetchEducation.fulfilled, (state, a) => { state.education = a.payload; })
       .addCase(fetchExperience.fulfilled, (state, a) => { state.experience = a.payload; })
       .addCase(fetchProjects.fulfilled, (state, a) => { state.projects = a.payload; })
-      .addCase(fetchServices.fulfilled, (state, a) => { state.services = a.payload; });
+      .addCase(fetchServices.fulfilled, (state, a) => { state.services = a.payload; })
+      .addCase(fetchSkillCategories.fulfilled, (state, a) => { state.skillCategories = a.payload; });
   },
 });
 

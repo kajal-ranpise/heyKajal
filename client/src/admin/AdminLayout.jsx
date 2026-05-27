@@ -8,6 +8,7 @@ const navItems = [
   { to: '/admin/dashboard', icon: 'bi-speedometer2', label: 'Dashboard' },
   { to: '/admin/about', icon: 'bi-person', label: 'About' },
   { to: '/admin/skills', icon: 'bi-bar-chart', label: 'Skills' },
+  { to: '/admin/skill-categories', icon: 'bi-tags', label: 'Skill Categories' },
   { to: '/admin/stats', icon: 'bi-trophy', label: 'Stats' },
   { to: '/admin/education', icon: 'bi-mortarboard', label: 'Education' },
   { to: '/admin/experience', icon: 'bi-briefcase', label: 'Experience' },

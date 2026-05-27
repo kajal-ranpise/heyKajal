@@ -18,6 +18,9 @@ const aboutSchema = new mongoose.Schema({
   heroSubtitle: { type: String, default: '' },
   profileImg: { type: String, default: '' },
   resumeUrl: { type: String, default: '' },
+  accomplishments: { type: [String], default: [] },
+  achievements: { type: [{ title: String, documentUrl: String, link: String }], default: [] },
+  coreCompetencies: { type: [String], default: [] },
 });
 
 module.exports = mongoose.model('About', aboutSchema);
