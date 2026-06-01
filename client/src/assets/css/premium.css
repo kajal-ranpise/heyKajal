@@ -1419,7 +1419,7 @@ a {
   padding: 6px 0;
   font-size: 14px;
   color: var(--default-color);
-  border-bottom: 1px solid var(--border-color);
+  /* border-bottom: 1px solid var(--border-color); */
   line-height: 1.5;
 }
 .pd-bullet-list li:last-child { border-bottom: none; }
@@ -1473,6 +1473,36 @@ a {
 .pd-cs-pill-orange { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.25); }
 .pd-cs-pill-teal   { background: rgba(52,183,167,0.12); color: #34b7a7; border: 1px solid rgba(52,183,167,0.25); }
 .pd-cs-row p { font-size: 14px; line-height: 1.65; color: var(--default-color); margin: 0; }
+
+/* Challenges & Solutions Side by Side */
+.pd-challenges-solutions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.pd-challenges-col,
+.pd-solutions-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-cs-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .pd-challenges-solutions-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .pd-cs-divider {
+    display: none;
+  }
+}
 
 /* Mobile */
 @media (max-width: 767px) {

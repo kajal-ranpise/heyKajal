@@ -185,33 +185,43 @@ function ProjectDetails() {
         )}
 
         {/* ── Challenges & Solutions ── */}
-        {project.challenges?.length > 0 && (
+        {(project.challenges?.length > 0 || project.solutions?.length > 0) && (
           <div className="container mt-3" {...fadeUp(140)}>
             <div className="pd-card">
-              <div className="pd-list-header">
+             {/*  <div className="pd-list-header" style={{ marginBottom: '24px' }}>
                 <span className="pd-list-icon pd-icon-orange"><i className="bi bi-lightning-charge" /></span>
-                <h3 className="pd-section-title mb-0">Challenges &amp; Solutions</h3>
-              </div>
-              <div className="pd-cs-list">
-                {project.challenges.map((item, i) => (
-                  <div key={i} className="pd-cs-item">
-                    <span className="pd-cs-num">{String(i + 1).padStart(2, "0")}</span>
-                    <div className="pd-cs-body">
-                      <div className="pd-cs-row pd-cs-challenge-row">
-                        <span className="pd-cs-pill pd-cs-pill-orange">
-                          <i className="bi bi-exclamation-circle" /> Challenge
-                        </span>
-                        <p>{item.challenge}</p>
-                      </div>
-                      <div className="pd-cs-row pd-cs-solution-row">
-                        <span className="pd-cs-pill pd-cs-pill-teal">
-                          <i className="bi bi-check2-circle" /> Solution
-                        </span>
-                        <p>{item.solution}</p>
-                      </div>
+                <h3 className="pd-section-title mb-0">Challenges & Solutions</h3>
+              </div> */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+                {/* Challenges Column */}
+                {project.challenges?.length > 0 && (
+                  <div>
+                    <div className="pd-list-header" style={{ marginBottom: '16px' }}>
+                      <span className="pd-list-icon pd-icon-orange"><i className="bi bi-exclamation-circle" /></span>
+                      <h3 className="pd-section-title mb-0">Challenges</h3>
                     </div>
+                    <ul className="pd-bullet-list">
+                      {project.challenges.map((item, i) => (
+                        <li key={i}><i className="bi bi-exclamation-triangle-fill" style={{ color: '#fb923c', marginRight: '8px' }} />{item}</li>
+                      ))}
+                    </ul>
                   </div>
-                ))}
+                )}
+
+                {/* Solutions Column */}
+                {project.solutions?.length > 0 && (
+                  <div>
+                    <div className="pd-list-header" style={{ marginBottom: '16px' }}>
+                      <span className="pd-list-icon pd-icon-teal"><i className="bi bi-check2-circle" /></span>
+                      <h3 className="pd-section-title mb-0">Solutions</h3>
+                    </div>
+                    <ul className="pd-bullet-list">
+                      {project.solutions.map((item, i) => (
+                        <li key={i}><i className="bi bi-check-circle-fill" style={{ color: '#34b7a7', marginRight: '8px' }} />{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>

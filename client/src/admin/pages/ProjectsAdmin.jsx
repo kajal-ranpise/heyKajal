@@ -6,12 +6,10 @@ import ConfirmModal from '../components/ConfirmModal';
 
 const CATEGORIES = ['filter-react', 'filter-node', 'filter-php', 'filter-mysql', 'filter-mongodb'];
 
-const EMPTY_CHALLENGE = { challenge: '', solution: '' };
-
 const empty = {
   slug: '', title: '', desc: '', industry: '', tech: '', category: [],
   imgUrl: '', liveUrl: '', githubUrl: '', features: '',
-  responsibilities: '', challenges: [EMPTY_CHALLENGE], outcome: '',
+  responsibilities: '', challenges: '', solutions: '', outcome: '',
   client: '', year: '', order: 0,
 };
 
@@ -30,20 +28,6 @@ const Field = ({ label, children, span }) => (
 );
 
 const ProjectForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => {
-  const challenges = data.challenges || [EMPTY_CHALLENGE];
-
-  const addPair = () =>
-    setData({ ...data, challenges: [...challenges, { challenge: '', solution: '' }] });
-
-  const removePair = (idx) =>
-    setData({ ...data, challenges: challenges.filter((_, i) => i !== idx) });
-
-  const updatePair = (idx, field, value) =>
-    setData({
-      ...data,
-      challenges: challenges.map((c, i) => (i === idx ? { ...c, [field]: value } : c)),
-    });
-
   return (
     <form onSubmit={onSubmit}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
@@ -107,86 +91,24 @@ const ProjectForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => {
           />
         </Field>
 
-        {/* Challenges & Solutions — dynamic pairs */}
-        <Field label="Challenges & Solutions" span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {challenges.map((pair, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr auto',
-                  gap: 8,
-                  alignItems: 'flex-start',
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: 8,
-                  padding: '10px 12px',
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#fb923c', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
-                    Challenge
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="What was the challenge?"
-                    value={pair.challenge}
-                    onChange={(e) => updatePair(idx, 'challenge', e.target.value)}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-                <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#34b7a7', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
-                    Solution
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="How was it solved?"
-                    value={pair.solution}
-                    onChange={(e) => updatePair(idx, 'solution', e.target.value)}
-                    style={{ width: '100%' }}
-                  />
-                </div>
-                {challenges.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removePair(idx)}
-                    style={{
-                      marginTop: 22,
-                      background: '#fee2e2',
-                      color: '#dc2626',
-                      border: 'none',
-                      borderRadius: 6,
-                      width: 30,
-                      height: 30,
-                      cursor: 'pointer',
-                      fontWeight: 700,
-                      fontSize: 16,
-                    }}
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={addPair}
-              style={{
-                alignSelf: 'flex-start',
-                background: 'none',
-                border: '1px dashed #94a3b8',
-                borderRadius: 6,
-                padding: '6px 14px',
-                fontSize: '0.8rem',
-                color: '#64748b',
-                cursor: 'pointer',
-              }}
-            >
-              + Add Challenge
-            </button>
-          </div>
+        {/* Challenges */}
+        <Field label="Challenges (comma-separated)" span>
+          <textarea
+            placeholder="Challenge 1, Challenge 2, Challenge 3, ..."
+            value={data.challenges}
+            onChange={(e) => setData({ ...data, challenges: e.target.value })}
+            rows={2}
+          />
+        </Field>
+
+        {/* Solutions */}
+        <Field label="Solutions (comma-separated)" span>
+          <textarea
+            placeholder="Solution 1, Solution 2, Solution 3, ..."
+            value={data.solutions}
+            onChange={(e) => setData({ ...data, solutions: e.target.value })}
+            rows={2}
+          />
         </Field>
 
         <Field label="Project Outcome" span>
@@ -230,7 +152,8 @@ const toPayload = (data) => ({
   tech: toArray(data.tech),
   features: toArray(data.features),
   responsibilities: toArray(data.responsibilities),
-  challenges: (data.challenges || []).filter((c) => c.challenge || c.solution),
+  challenges: toArray(data.challenges),
+  solutions: toArray(data.solutions),
   year: data.year ? Number(data.year) : undefined,
 });
 
@@ -239,13 +162,8 @@ const fromRecord = (p) => ({
   tech: Array.isArray(p.tech) ? p.tech.join(', ') : p.tech || '',
   features: Array.isArray(p.features) ? p.features.join(', ') : p.features || '',
   responsibilities: Array.isArray(p.responsibilities) ? p.responsibilities.join(', ') : p.responsibilities || '',
-  challenges: Array.isArray(p.challenges) && p.challenges.length > 0
-    ? p.challenges.map((c) =>
-        typeof c === 'object' && (c.challenge !== undefined || c.solution !== undefined)
-          ? { challenge: c.challenge || '', solution: c.solution || '' }
-          : { challenge: String(c), solution: '' }
-      )
-    : [EMPTY_CHALLENGE],
+  challenges: Array.isArray(p.challenges) ? p.challenges.join(', ') : p.challenges || '',
+  solutions: Array.isArray(p.solutions) ? p.solutions.join(', ') : p.solutions || '',
   year: p.year || '',
   liveUrl: p.liveUrl || '',
   githubUrl: p.githubUrl || '',
