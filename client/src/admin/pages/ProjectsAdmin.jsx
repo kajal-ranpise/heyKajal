@@ -76,38 +76,53 @@ const ProjectForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => {
         </Field>
 
         {/* Arrays */}
-        <Field label="Tech Stack (comma-separated)" span>
-          <input type="text" placeholder="React, Node.js, MySQL" value={data.tech} onChange={(e) => setData({ ...data, tech: e.target.value })} />
-        </Field>
-        <Field label="Key Features (comma-separated)" span>
-          <input type="text" placeholder="Feature 1, Feature 2, ..." value={data.features} onChange={(e) => setData({ ...data, features: e.target.value })} />
-        </Field>
-        <Field label="Your Responsibilities (comma-separated)" span>
+        <Field label="Tech Stack (one per line)" span>
           <textarea
-            placeholder="Built the REST API, Designed the database schema, ..."
+            placeholder="React&#10;Node.js&#10;MySQL"
+            value={data.tech}
+            onChange={(e) => setData({ ...data, tech: e.target.value })}
+            rows={3}
+            style={{ fontFamily: 'monospace' }}
+          />
+        </Field>
+        <Field label="Key Features (one per line)" span>
+          <textarea
+            placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+            value={data.features}
+            onChange={(e) => setData({ ...data, features: e.target.value })}
+            rows={3}
+            style={{ fontFamily: 'monospace' }}
+          />
+        </Field>
+        <Field label="Your Responsibilities (one per line)" span>
+          <textarea
+            placeholder="Built the REST API&#10;Designed the database schema&#10;Created unit tests"
             value={data.responsibilities}
             onChange={(e) => setData({ ...data, responsibilities: e.target.value })}
-            rows={2}
+            rows={3}
+            style={{ fontFamily: 'monospace' }}
           />
         </Field>
 
         {/* Challenges */}
-        <Field label="Challenges (comma-separated)" span>
+        <Field label="Challenges (one per line)" span>
           <textarea
-            placeholder="Challenge 1, Challenge 2, Challenge 3, ..."
+            placeholder="Challenge 1&#10;Challenge 2&#10;Challenge 3"
             value={data.challenges}
             onChange={(e) => setData({ ...data, challenges: e.target.value })}
-            rows={2}
+            rows={3}
+            style={{ fontFamily: 'monospace' }}
           />
         </Field>
 
         {/* Solutions */}
-        <Field label="Solutions (comma-separated)" span>
+        <Field label="Solutions (one per line)" span>
           <textarea
-            placeholder="Solution 1, Solution 2, Solution 3, ..."
+            placeholder="Solution 1&#10;Solution 2&#10;Solution 3"
             value={data.solutions}
             onChange={(e) => setData({ ...data, solutions: e.target.value })}
-            rows={2}
+            rows={3}
+            style={{ fontFamily: 'monospace' }}
           />
         </Field>
 
@@ -145,7 +160,7 @@ const ProjectForm = ({ data, setData, onSubmit, onCancel, submitLabel }) => {
   );
 };
 
-const toArray = (val) => val ? val.split(',').map((s) => s.trim()).filter(Boolean) : [];
+const toArray = (val) => val ? val.split('\n').map((s) => s.trim()).filter(Boolean) : [];
 
 const toPayload = (data) => ({
   ...data,
@@ -159,11 +174,11 @@ const toPayload = (data) => ({
 
 const fromRecord = (p) => ({
   ...p,
-  tech: Array.isArray(p.tech) ? p.tech.join(', ') : p.tech || '',
-  features: Array.isArray(p.features) ? p.features.join(', ') : p.features || '',
-  responsibilities: Array.isArray(p.responsibilities) ? p.responsibilities.join(', ') : p.responsibilities || '',
-  challenges: Array.isArray(p.challenges) ? p.challenges.join(', ') : p.challenges || '',
-  solutions: Array.isArray(p.solutions) ? p.solutions.join(', ') : p.solutions || '',
+  tech: Array.isArray(p.tech) ? p.tech.join('\n') : p.tech || '',
+  features: Array.isArray(p.features) ? p.features.join('\n') : p.features || '',
+  responsibilities: Array.isArray(p.responsibilities) ? p.responsibilities.join('\n') : p.responsibilities || '',
+  challenges: Array.isArray(p.challenges) ? p.challenges.join('\n') : p.challenges || '',
+  solutions: Array.isArray(p.solutions) ? p.solutions.join('\n') : p.solutions || '',
   year: p.year || '',
   liveUrl: p.liveUrl || '',
   githubUrl: p.githubUrl || '',
